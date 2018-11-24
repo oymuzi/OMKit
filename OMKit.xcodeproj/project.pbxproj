@@ -16,6 +16,8 @@
 		46EC0D4821A918F700DAE137 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EC0D4721A918F700DAE137 /* main.m */; };
 		46EC0D5221A918F700DAE137 /* OMKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EC0D5121A918F700DAE137 /* OMKitTests.m */; };
 		46EC0D5D21A918F700DAE137 /* OMKitUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EC0D5C21A918F700DAE137 /* OMKitUITests.m */; };
+		46EC0D6F21A91B0800DAE137 /* OMTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EC0D6D21A91B0700DAE137 /* OMTimer.m */; };
+		46EC0D7321A91D7300DAE137 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EC0D7221A91D7300DAE137 /* TimerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,11 @@
 		46EC0D5821A918F700DAE137 /* OMKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OMKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		46EC0D5C21A918F700DAE137 /* OMKitUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OMKitUITests.m; sourceTree = "<group>"; };
 		46EC0D5E21A918F700DAE137 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46EC0D6D21A91B0700DAE137 /* OMTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OMTimer.m; sourceTree = "<group>"; };
+		46EC0D6E21A91B0700DAE137 /* OMTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OMTimer.h; sourceTree = "<group>"; };
+		46EC0D7121A91D7300DAE137 /* TimerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
+		46EC0D7221A91D7300DAE137 /* TimerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
+		46EC0D7721A92A8600DAE137 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +90,7 @@
 		46EC0D2921A918F300DAE137 = {
 			isa = PBXGroup;
 			children = (
+				46EC0D7721A92A8600DAE137 /* README.md */,
 				46EC0D3421A918F400DAE137 /* OMKit */,
 				46EC0D5021A918F700DAE137 /* OMKitTests */,
 				46EC0D5B21A918F700DAE137 /* OMKitUITests */,
@@ -103,6 +111,8 @@
 		46EC0D3421A918F400DAE137 /* OMKit */ = {
 			isa = PBXGroup;
 			children = (
+				46EC0D7021A91D5900DAE137 /* ViewControllers */,
+				46EC0D6C21A91A9F00DAE137 /* OMTimer */,
 				46EC0D3521A918F400DAE137 /* AppDelegate.h */,
 				46EC0D3621A918F400DAE137 /* AppDelegate.m */,
 				46EC0D3821A918F400DAE137 /* ViewController.h */,
@@ -133,6 +143,24 @@
 				46EC0D5E21A918F700DAE137 /* Info.plist */,
 			);
 			path = OMKitUITests;
+			sourceTree = "<group>";
+		};
+		46EC0D6C21A91A9F00DAE137 /* OMTimer */ = {
+			isa = PBXGroup;
+			children = (
+				46EC0D6E21A91B0700DAE137 /* OMTimer.h */,
+				46EC0D6D21A91B0700DAE137 /* OMTimer.m */,
+			);
+			path = OMTimer;
+			sourceTree = "<group>";
+		};
+		46EC0D7021A91D5900DAE137 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				46EC0D7121A91D7300DAE137 /* TimerViewController.h */,
+				46EC0D7221A91D7300DAE137 /* TimerViewController.m */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,7 +226,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1000;
-				ORGANIZATIONNAME = "幸福的小木子";
+				ORGANIZATIONNAME = oymuzi;
 				TargetAttributes = {
 					46EC0D3121A918F400DAE137 = {
 						CreatedOnToolsVersion = 10.0;
@@ -265,6 +293,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46EC0D7321A91D7300DAE137 /* TimerViewController.m in Sources */,
+				46EC0D6F21A91B0800DAE137 /* OMTimer.m in Sources */,
 				46EC0D4021A918F400DAE137 /* OMKit.xcdatamodeld in Sources */,
 				46EC0D3A21A918F400DAE137 /* ViewController.m in Sources */,
 				46EC0D4821A918F700DAE137 /* main.m in Sources */,

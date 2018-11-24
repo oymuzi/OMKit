@@ -11,6 +11,7 @@
 
 @interface TimerViewController ()
 
+/** 计时器*/
 @property (nonatomic, strong) OMTimer *timer;
 
 @end
