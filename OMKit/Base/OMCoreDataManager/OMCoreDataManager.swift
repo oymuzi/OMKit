@@ -1,6 +1,6 @@
 //
 //  OMCoreDataManager.swift
-//  OMCoreData
+//  OMKit
 //
 //  Created by oymuzi on 2019/1/25.
 //  Copyright © 2019年 oymuzi. All rights reserved.
@@ -8,6 +8,15 @@
 
 import UIKit
 import CoreData
+
+/**
+ 使用须知：
+ 1.存放于设备的数据库文件默认于~/Documents/data/data.momd文件，可通过OMCoreDataManagerConfiguration更改
+ 2.初始化函数中参数databaseName为创建CoreData文件的名称一致，否则将会报错
+ 3.由于CoreData可存储transformable类型，如果是自定义类型，必须遵守NSCoding协议，并实现其协议，否则将会出现保存错误的奔溃信息
+ 4.基于泛型封装的，有的需要自己写明类型，更多的可以参照demo-OMCoreDataManagerDemo
+ 5.增加、更改都需要调用save方法进行保存修改
+ */
 
 /** 数据库存放配置*/
 struct OMCoreDataManagerConfiguration {
@@ -18,7 +27,7 @@ struct OMCoreDataManagerConfiguration {
 }
 
 /** 数据库操作完成回调*/
-typealias OMCoreDataManagerCompeltion = (_ isSuccess: Bool, _ error: String?) -> Void
+typealias OMCoreDataManagerOprationCompeltion = (_ isSuccess: Bool, _ error: String?) -> Void
 
 /** 数据库查询回调*/
 typealias OMCoreDataManagerQueryCompletion<T> = (_ isSuccess: Bool, _ results: [T], _ error: String?) -> Void
@@ -162,11 +171,10 @@ class OMCoreDataManager: NSObject {
         
     }
     
-    
     /// 新增数据或保存修改
     ///
     /// - Parameter completion: 回调
-    public func save(_ completion: OMCoreDataManagerCompeltion?) {
+    public func save(_ completion: OMCoreDataManagerOprationCompeltion?) {
         do{
             try self.context?.save()
             completion?(true, nil)
