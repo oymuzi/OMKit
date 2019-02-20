@@ -17,8 +17,9 @@
 		4618991521835493008C8203 /* OMKitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4618991421835493008C8203 /* OMKitUITests.swift */; };
 		46189924218354F2008C8203 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46189923218354F2008C8203 /* UIView+Extension.swift */; };
 		4618992921835F1F008C8203 /* OMImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4618992821835F1F008C8203 /* OMImage.swift */; };
-		B658FA8F21FD650B009FFF6F /* OMCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FA8C21FD650B009FFF6F /* OMCoreDataManager.swift */; };
-		B658FA9021FD650B009FFF6F /* OMCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B658FA8D21FD650B009FFF6F /* OMCoreData.xcdatamodeld */; };
+		B6297E5B221D94DC00ACEF9F /* OMCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6297E57221D94DC00ACEF9F /* OMCoreData.xcdatamodeld */; };
+		B6297E5C221D94DC00ACEF9F /* OMCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6297E59221D94DC00ACEF9F /* OMCoreDataManager.swift */; };
+		B6297E5D221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6297E5A221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,8 +56,9 @@
 		4618991621835493008C8203 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		46189923218354F2008C8203 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		4618992821835F1F008C8203 /* OMImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OMImage.swift; sourceTree = "<group>"; };
-		B658FA8C21FD650B009FFF6F /* OMCoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCoreDataManager.swift; sourceTree = "<group>"; };
-		B658FA8E21FD650B009FFF6F /* OMCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OMCoreData.xcdatamodel; sourceTree = "<group>"; };
+		B6297E58221D94DC00ACEF9F /* OMCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OMCoreData.xcdatamodel; sourceTree = "<group>"; };
+		B6297E59221D94DC00ACEF9F /* OMCoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCoreDataManager.swift; sourceTree = "<group>"; };
+		B6297E5A221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCoreDataManagerDemoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,11 +151,20 @@
 		4618992521835EE3008C8203 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				B658FA8D21FD650B009FFF6F /* OMCoreData.xcdatamodeld */,
-				B658FA8C21FD650B009FFF6F /* OMCoreDataManager.swift */,
+				B6297E56221D946800ACEF9F /* OMCoreDataManager */,
 				4618992821835F1F008C8203 /* OMImage.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		B6297E56221D946800ACEF9F /* OMCoreDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				B6297E57221D94DC00ACEF9F /* OMCoreData.xcdatamodeld */,
+				B6297E59221D94DC00ACEF9F /* OMCoreDataManager.swift */,
+				B6297E5A221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift */,
+			);
+			path = OMCoreDataManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,11 +299,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				461898FA21835490008C8203 /* OMKit.xcdatamodeld in Sources */,
+				B6297E5C221D94DC00ACEF9F /* OMCoreDataManager.swift in Sources */,
+				B6297E5D221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift in Sources */,
 				461898F421835490008C8203 /* ViewController.swift in Sources */,
+				B6297E5B221D94DC00ACEF9F /* OMCoreData.xcdatamodeld in Sources */,
 				46189924218354F2008C8203 /* UIView+Extension.swift in Sources */,
 				461898F221835490008C8203 /* AppDelegate.swift in Sources */,
-				B658FA9021FD650B009FFF6F /* OMCoreData.xcdatamodeld in Sources */,
-				B658FA8F21FD650B009FFF6F /* OMCoreDataManager.swift in Sources */,
 				4618992921835F1F008C8203 /* OMImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -634,12 +646,12 @@
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
-		B658FA8D21FD650B009FFF6F /* OMCoreData.xcdatamodeld */ = {
+		B6297E57221D94DC00ACEF9F /* OMCoreData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				B658FA8E21FD650B009FFF6F /* OMCoreData.xcdatamodel */,
+				B6297E58221D94DC00ACEF9F /* OMCoreData.xcdatamodel */,
 			);
-			currentVersion = B658FA8E21FD650B009FFF6F /* OMCoreData.xcdatamodel */;
+			currentVersion = B6297E58221D94DC00ACEF9F /* OMCoreData.xcdatamodel */;
 			path = OMCoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

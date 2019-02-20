@@ -13,55 +13,10 @@ class ViewController: UIViewController {
     var logoView: UIImageView!
     var logo: UIImageView!
     
-    var records = [OMChargeRecord]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        let manager = OMCoreDataManager.init(databaseName: "OMCoreData")
-        let record: OMChargeRecord = manager.createObject(entityName: "OMChargeRecord")
-        record.profile = nil
-        record.amount = 8888.888
-        record.desc = "卖菜VIP"
-        record.time = 201988888888
-        record.type = 0
-        
-        manager.save { (isSuccess, error) in
-            print("保存成功：\(isSuccess), error: \(error)")
-        }
-        
-        manager.query(tableName: "OMChargeRecord", predicate: nil, sortDescriptor: nil, limit: 0) { (isSuccess, results, error) in
-            let res: Array<OMChargeRecord> = results as! Array<OMChargeRecord>
-            print("查询成功？:\(isSuccess), error: \(error)")
-            for object in res{
-                self.records.append(object)
-            }
-        }
-        for object in self.records {
-            print("ctime: \(object.time)  amount: \(object.amount)  desc: \(object.desc)  type: \(object.type) profile: \((object.profile)?.description) isUpload: \(object.isUpload), arc: \(object.arc)")
-        }
-//
-//        let originalImage = UIImage.init(named: "avatar.jpg")!
-//        let arcImage = originalImage.OM.clicpArc(radius: 20)
-//        logoView = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 100, height: 100))
-//        print(originalImage, arcImage)
-//        logoView.image = arcImage
-//
-//        logoView.backgroundColor = UIColor.red
-//        view.addSubview(logoView)
-////        draw()
-//
-//        logo = UIImageView.init(frame: CGRect.init(x: 100, y: 400, width: 200, height: 200))
-//        logo.backgroundColor = UIColor.green
-//        _ = logo.addShadow(offset: CGSize.init(width: 5, height: 5), color: UIColor.red, radius: 15, opacity: 0.5)
-////        logo.clipRoundAndBorder(width: 20, color: UIColor.red)
-//
-////        logo.clipRoundCorner(byPosition: UIRectCorner.topLeft, radius: 100, borderWidth: 20, borderColor: UIColor.gray)
-////        logo.addShadow(offset: CGSize.init(width: -30, height: -36), color: UIColor.red, radius: 10, opacity: 0.6)
-////        logo.addBorder(width: 3, color: UIColor.red)
-////        logo.clipRound()
-//        view.addSubview(logo)
-////        test()
+        self.navigationController?.pushViewController(OMCoreDataManagerDemoViewController(), animated: true)
     }
 
     func test() {
@@ -111,7 +66,7 @@ class ViewController: UIViewController {
     
 
     override func viewDidLayoutSubviews() {
-        logoView.center = CGPoint.init(x: 100, y: 300)
+//        logoView.center = CGPoint.init(x: 100, y: 300)
     }
     
 }
