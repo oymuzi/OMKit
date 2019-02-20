@@ -36,6 +36,10 @@ class OMProfile: NSObject, NSCoding {
 
 class OMCoreDataManagerDemoViewController: UIViewController {
 
+    deinit{
+        print("I AM FREE BY RIGHT WAY！❤️")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

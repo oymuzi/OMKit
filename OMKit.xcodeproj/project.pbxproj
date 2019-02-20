@@ -20,6 +20,7 @@
 		B6297E5B221D94DC00ACEF9F /* OMCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6297E57221D94DC00ACEF9F /* OMCoreData.xcdatamodeld */; };
 		B6297E5C221D94DC00ACEF9F /* OMCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6297E59221D94DC00ACEF9F /* OMCoreDataManager.swift */; };
 		B6297E5D221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6297E5A221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift */; };
+		B6297E60221DA01200ACEF9F /* OMWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6297E5F221DA01200ACEF9F /* OMWebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		B6297E58221D94DC00ACEF9F /* OMCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OMCoreData.xcdatamodel; sourceTree = "<group>"; };
 		B6297E59221D94DC00ACEF9F /* OMCoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCoreDataManager.swift; sourceTree = "<group>"; };
 		B6297E5A221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCoreDataManagerDemoViewController.swift; sourceTree = "<group>"; };
+		B6297E5F221DA01200ACEF9F /* OMWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OMWebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 		4618992521835EE3008C8203 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				B6297E5E221D9F1100ACEF9F /* OMWebView */,
 				B6297E56221D946800ACEF9F /* OMCoreDataManager */,
 				4618992821835F1F008C8203 /* OMImage.swift */,
 			);
@@ -165,6 +168,14 @@
 				B6297E5A221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift */,
 			);
 			path = OMCoreDataManager;
+			sourceTree = "<group>";
+		};
+		B6297E5E221D9F1100ACEF9F /* OMWebView */ = {
+			isa = PBXGroup;
+			children = (
+				B6297E5F221DA01200ACEF9F /* OMWebView.swift */,
+			);
+			path = OMWebView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +309,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6297E60221DA01200ACEF9F /* OMWebView.swift in Sources */,
 				461898FA21835490008C8203 /* OMKit.xcdatamodeld in Sources */,
 				B6297E5C221D94DC00ACEF9F /* OMCoreDataManager.swift in Sources */,
 				B6297E5D221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift in Sources */,
