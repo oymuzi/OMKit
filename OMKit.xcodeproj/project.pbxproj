@@ -21,6 +21,9 @@
 		B6297E5C221D94DC00ACEF9F /* OMCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6297E59221D94DC00ACEF9F /* OMCoreDataManager.swift */; };
 		B6297E5D221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6297E5A221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift */; };
 		B6297E60221DA01200ACEF9F /* OMWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6297E5F221DA01200ACEF9F /* OMWebView.swift */; };
+		B672C3E92221A5FA0098BD22 /* OMViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B672C3E72221A5F90098BD22 /* OMViewController.swift */; };
+		B672C3EA2221A5FA0098BD22 /* OMViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B672C3E82221A5FA0098BD22 /* OMViewController.xib */; };
+		B672C3EE222416BE0098BD22 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B672C3ED222416BE0098BD22 /* UILabel+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +64,9 @@
 		B6297E59221D94DC00ACEF9F /* OMCoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCoreDataManager.swift; sourceTree = "<group>"; };
 		B6297E5A221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCoreDataManagerDemoViewController.swift; sourceTree = "<group>"; };
 		B6297E5F221DA01200ACEF9F /* OMWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OMWebView.swift; sourceTree = "<group>"; };
+		B672C3E72221A5F90098BD22 /* OMViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OMViewController.swift; sourceTree = "<group>"; };
+		B672C3E82221A5FA0098BD22 /* OMViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OMViewController.xib; sourceTree = "<group>"; };
+		B672C3ED222416BE0098BD22 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +121,8 @@
 				46189922218354AE008C8203 /* Extension */,
 				461898F121835490008C8203 /* AppDelegate.swift */,
 				461898F321835490008C8203 /* ViewController.swift */,
+				B672C3E72221A5F90098BD22 /* OMViewController.swift */,
+				B672C3E82221A5FA0098BD22 /* OMViewController.xib */,
 				461898F521835490008C8203 /* Main.storyboard */,
 				461898FB21835493008C8203 /* Assets.xcassets */,
 				461898FD21835493008C8203 /* LaunchScreen.storyboard */,
@@ -146,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				46189923218354F2008C8203 /* UIView+Extension.swift */,
+				B672C3ED222416BE0098BD22 /* UILabel+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -282,6 +291,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B672C3EA2221A5FA0098BD22 /* OMViewController.xib in Resources */,
 				461898FF21835493008C8203 /* LaunchScreen.storyboard in Resources */,
 				461898FC21835493008C8203 /* Assets.xcassets in Resources */,
 				461898F721835490008C8203 /* Main.storyboard in Resources */,
@@ -309,10 +319,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B672C3EE222416BE0098BD22 /* UILabel+Extension.swift in Sources */,
 				B6297E60221DA01200ACEF9F /* OMWebView.swift in Sources */,
 				461898FA21835490008C8203 /* OMKit.xcdatamodeld in Sources */,
 				B6297E5C221D94DC00ACEF9F /* OMCoreDataManager.swift in Sources */,
 				B6297E5D221D94DC00ACEF9F /* OMCoreDataManagerDemoViewController.swift in Sources */,
+				B672C3E92221A5FA0098BD22 /* OMViewController.swift in Sources */,
 				461898F421835490008C8203 /* ViewController.swift in Sources */,
 				B6297E5B221D94DC00ACEF9F /* OMCoreData.xcdatamodeld in Sources */,
 				46189924218354F2008C8203 /* UIView+Extension.swift in Sources */,

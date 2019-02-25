@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 typealias ClicpRound = (_ radius: CGFloat) -> UIView
 
@@ -21,7 +22,11 @@ typealias ClicpRound = (_ radius: CGFloat) -> UIView
 //    }
 //}
 
-// MARK: - 为UIView增加属性
+private let kScreenScale = UIScreen.main.scale
+private let kScreenWidth = UIScreen.main.bounds.width
+private let kScreenHeight = UIScreen.main.bounds.height
+
+// MARK: - 基础元素属性
 extension UIView {
     
 //    var clicpRound: ClicpRound{
@@ -30,278 +35,421 @@ extension UIView {
 //        }
 //    }
     
+    /** 对浮点数取整*/
+    private func om_pixelIntegerValue(with pointValue: CGFloat) -> CGFloat {
+        return round((pointValue * kScreenScale) / kScreenScale)
+    }
+    
     /// x轴起点
-    var x: CGFloat {
+    var om_x: CGFloat {
         get{
             return self.frame.minX
         }
         set{
             var tempFrame = self.frame
-            tempFrame.origin.x = newValue
+            tempFrame.origin.x = om_pixelIntegerValue(with: newValue)
             self.frame = tempFrame
         }
     }
     
     /// y轴起点
-    var y: CGFloat {
+    var om_y: CGFloat {
         get{
             return self.frame.minY
         }
         set{
             var tempFrame = self.frame
-            tempFrame.origin.y = newValue
+            tempFrame.origin.y = om_pixelIntegerValue(with: newValue)
             self.frame = tempFrame
         }
     }
     
     /// 宽
-    var width: CGFloat {
+    var om_width: CGFloat {
         get{
             return self.frame.width
         }
         set{
             var tempFrame = self.frame
-            tempFrame.size.width = newValue
+            tempFrame.size.width = om_pixelIntegerValue(with: newValue)
             self.frame = tempFrame
         }
     }
     
     /// 高
-    var height: CGFloat{
+    var om_height: CGFloat{
         get{
             return self.frame.width
         }
         set{
             var tempFrame = self.frame
-            tempFrame.size.height = newValue
+            tempFrame.size.height = om_pixelIntegerValue(with: newValue)
             self.frame = tempFrame
         }
     }
     
     /// 起始d点
-    var origin: CGPoint{
+    var om_origin: CGPoint{
         get{
             return self.frame.origin
         }
         set{
             var tempFrame = self.frame
-            tempFrame.origin.x = newValue.x
-            tempFrame.origin.y = newValue.y
+            tempFrame.origin.x = om_pixelIntegerValue(with: newValue.x)
+            tempFrame.origin.y = om_pixelIntegerValue(with: newValue.y)
             self.frame = tempFrame
         }
     }
+    
+    /** 尺寸*/
+    var om_size: CGSize{
+        get{
+            return self.frame.size
+        }
+        set{
+            var tempFrame = self.frame
+            tempFrame.size.width = om_pixelIntegerValue(with: newValue.width)
+            tempFrame.size.height = om_pixelIntegerValue(with: newValue.height)
+            self.frame = tempFrame
+        }
+    }
+    
+    /** 中心点x*/
+    var om_centerX: CGFloat{
+        get{
+            return self.center.x
+        }
+        set{
+            self.center.x = om_pixelIntegerValue(with: newValue)
+        }
+    }
+    
+    /** 中心点y*/
+    var om_centerY: CGFloat{
+        get{
+            return self.center.y
+        }
+        set{
+            self.center.y = om_pixelIntegerValue(with: newValue)
+        }
+    }
+    
+    /** 中心点*/
+    var om_center: CGPoint{
+        get{
+            return self.center
+        }
+        set{
+            self.center = CGPoint.init(x: om_pixelIntegerValue(with: newValue.x), y: om_pixelIntegerValue(with: newValue.y))
+        }
+    }
+    
+    /** 视图右边值*/
+    var om_right: CGFloat {
+        get{
+            return om_x + om_width
+        }
+        set{
+            om_x = newValue - om_width
+        }
+    }
+    
+    /** 视图底部值*/
+    var om_bottom: CGFloat {
+        get{
+            return om_y + om_height
+        }
+        set{
+            om_y = newValue - om_height
+        }
+    }
+    
 }
 
-// MARK: - 为UIView增加方法
+private var UIViewKey_CAPTURING = "om_uiview_capturing"
+
+// MARK: - 截图-对当前视图进行快照
+extension UIView{
+//    public func snapshot
+    
+    /** 是否正在截屏*/
+    public var isCapturing: Bool {
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIViewKey_CAPTURING) else {
+                return false
+            }
+            guard let boolValue = value as? Bool else {
+                return false
+            }
+            return boolValue
+        }
+        set{
+            objc_setAssociatedObject(self, &UIViewKey_CAPTURING, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    /**  是否包含了WKWebView*/
+    private func isCaontainWKWebView() -> Bool {
+        if self.isKind(of: WKWebView.self){
+            return true
+        } else {
+            for view in self.subviews {
+                return view.isCaontainWKWebView()
+            }
+        }
+        return false
+    }
+    
+    /** 快照回调*/
+    public typealias OMCaptureCompletion = (UIImage?) -> Void
+    
+    /// 对视图进行快照
+    ///
+    /// - Parameter completion: 回调
+    public func om_captureCurrentWihCompletion(_ completion: OMCaptureCompletion) {
+        self.isCapturing = true
+        let captureFrame = self.bounds
+        
+        UIGraphicsBeginImageContextWithOptions(captureFrame.size, true, kScreenScale)
+        let context = UIGraphicsGetCurrentContext()
+        context?.saveGState()
+        context?.translateBy(x: -om_x, y: -om_y)
+        
+        if self.isCaontainWKWebView(){
+            self.drawHierarchy(in: bounds, afterScreenUpdates: true)
+        } else {
+            self.layer.render(in: context!)
+        }
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        context?.restoreGState()
+        UIGraphicsEndImageContext()
+        self.isCapturing = false
+        completion(image)
+    }
+    
+}
+
+private var UIVIEWKEY_SHADOWOPACITY = "om_uiview_shadowOpacity"
+private var UIVIEWKEY_SHADOWCOLOR   = "om_uiview_shadowColor"
+private var UIVIEWKEY_SHADOWOFFSET  = "om_uiview_shadowOffset"
+private var UIVIEWKEY_SHADOWRADIUS  = "om_uiview_shadowRadius"
+private var UIVIEWKEY_CORNERRADIUS  = "om_uiview_shadowCornerRadius"
+private var UIVIEWKEY_BORDERCOLOR   = "om_uiview_shadowBorderColor"
+private var UIVIEWKEY_BORDERWIDTH   = "om_uiview_shadowBorderWidth"
+private var UIVIEWKEY_ROUNDCORNERS  = "om_uiview_roundCorners"
+
+// MARK: - 圆角、阴影、边框设置、毛玻璃方法
+@IBDesignable
 extension UIView {
     
-    
-    // MARK: -圆角处理
-    
-    /// 为正方形视图添加圆角，当视图不为正方形的时候不进行处理，绘制圆角为正方形的内切圆
-    func clipRound() {
-        guard self.bounds.width == self.bounds.height else { return }
-        let radius = self.bounds.width/2
-        let path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [UIRectCorner.topLeft, .topRight, .bottomRight, .bottomLeft], cornerRadii: CGSize(width: radius, height: radius))
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        self.layer.mask = maskLayer
+    /** 阴影不透明度*/
+    @IBInspectable
+    public var om_shadowOpacity: Float {
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIVIEWKEY_SHADOWOPACITY) else {
+                return 0;
+            }
+            guard let opacity = value as? Float else {
+                return 0;
+            }
+            return opacity
+        }
+        set{
+            objc_setAssociatedObject(self, &UIVIEWKEY_SHADOWOPACITY, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.layer.shadowOpacity = newValue
+        }
     }
     
-    /// 为视图添加圆角
-    ///
-    /// - Parameter radius: 圆角弧度
-    func clipRoundCorner(radius: CGFloat) {
-        let path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [UIRectCorner.topLeft, .topRight, .bottomRight, .bottomLeft], cornerRadii: CGSize(width: radius, height: radius))
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        self.layer.mask = maskLayer
+    /** 阴影颜色*/
+    @IBInspectable
+    public var om_shadowColor: UIColor? {
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIVIEWKEY_SHADOWCOLOR) else {
+                return nil;
+            }
+            guard let shadowColor = value as? UIColor else {
+                return nil;
+            }
+            return shadowColor
+        }
+        set{
+            objc_setAssociatedObject(self, &UIVIEWKEY_SHADOWCOLOR, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.layer.shadowColor = newValue?.cgColor
+        }
     }
     
-    /// 为视图指定方位添加圆角
+    /** 阴影偏移*/
+    @IBInspectable
+    public var om_shadowOffset: CGSize {
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIVIEWKEY_SHADOWOFFSET) else {
+                return CGSize.zero
+            }
+            guard let shadowOffset = value as? CGSize else {
+                return CGSize.zero
+            }
+            return shadowOffset
+        }
+        set{
+            objc_setAssociatedObject(self, &UIVIEWKEY_SHADOWOFFSET, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.layer.shadowOffset = newValue
+        }
+    }
+    
+    /** 阴影弧度*/
+    @IBInspectable
+    public var om_shadowRadius: CGFloat {
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIVIEWKEY_SHADOWRADIUS) else {
+                return 0
+            }
+            guard let shadowRadius = value as? CGFloat else {
+                return 0
+            }
+            return shadowRadius
+        }
+        set{
+            objc_setAssociatedObject(self, &UIVIEWKEY_SHADOWRADIUS, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.layer.shadowRadius = newValue
+        }
+    }
+    
+    /** 圆角弧度*/
+    @IBInspectable
+    public var om_cornerRadius: CGFloat {
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIVIEWKEY_CORNERRADIUS) else {
+                return 0
+            }
+            guard let cornerRadius = value as? CGFloat else {
+                return 0
+            }
+            return cornerRadius
+        }
+        set{
+            objc_setAssociatedObject(self, &UIVIEWKEY_CORNERRADIUS, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.layer.cornerRadius = newValue
+        }
+    }
+    
+    /** 边框颜色*/
+    @IBInspectable
+    public var om_borderColor: UIColor? {
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIVIEWKEY_BORDERCOLOR) else {
+                return nil;
+            }
+            guard let borderColor = value as? UIColor else {
+                return nil;
+            }
+            return borderColor
+        }
+        set{
+            objc_setAssociatedObject(self, &UIVIEWKEY_BORDERCOLOR, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.layer.borderColor = newValue?.cgColor
+        }
+    }
+    
+    /** 边框宽度*/
+    @IBInspectable
+    public var om_borderWidth: CGFloat {
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIVIEWKEY_BORDERWIDTH) else {
+                return 0.000001;
+            }
+            guard let borderWidth = value as? CGFloat else {
+                return 0.000001;
+            }
+            return borderWidth
+        }
+        set{
+            let borderWidth: CGFloat = newValue < 0.000001 ? 0.000001 : newValue
+            objc_setAssociatedObject(self, &UIVIEWKEY_BORDERWIDTH, borderWidth , .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.layer.borderWidth = newValue
+        }
+    }
+    
+    /** 需要处理的圆角，默认四个角都处理*/
+    public var om_roundCorner: UIRectCorner{
+        get{
+            guard let value = objc_getAssociatedObject(self, &UIVIEWKEY_ROUNDCORNERS) else {
+                return .allCorners
+            }
+            guard let corners = value as? UIRectCorner else {
+                return .allCorners
+            }
+            return corners
+        }
+        set{
+            objc_setAssociatedObject(self, &UIVIEWKEY_ROUNDCORNERS, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.layer.masksToBounds = false
+            
+            let cornerLayer = CAShapeLayer()
+            cornerLayer.frame = self.bounds
+            cornerLayer.backgroundColor = self.backgroundColor?.cgColor
+            
+            
+            let cornerRadius = om_cornerRadius > 0 ? om_cornerRadius : 0
+            let path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: newValue, cornerRadii: CGSize.init(width: cornerRadius, height: cornerRadius))
+            let shapeLayer = CAShapeLayer.init()
+            shapeLayer.path = path.cgPath
+            cornerLayer.mask = shapeLayer
+            
+            self.layer.addSublayer(cornerLayer)
+        }
+    }
+    
+    /// 使用方法添加圆角、边框、阴影样式, 不需要的属性，设置为nil即可
     ///
     /// - Parameters:
-    ///   - byPosition: 指定方位
-    ///   - radius: 圆角半径
-    func clipRoundCorner(byPosition: UIRectCorner, radius: CGFloat) {
-        let path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: byPosition, cornerRadii: CGSize(width: radius, height: radius))
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        self.layer.mask = maskLayer
-    }
-    
-    /// 为正方形视图添加圆角以及边框，当视图不为正方形的时候不进行处理，绘制圆角为正方形的内切圆
-    /// - Parameter borderWidth: 边框的宽度
+    ///   - cornerRadius: 圆角弧度半径
+    ///   - corners: 需要处理圆角的方向
+    ///   - borderWidth: 边框宽度
     ///   - borderColor: 边框颜色
-    func clipRound(borderWidth: CGFloat, borderColor: UIColor) {
-        guard self.bounds.width == self.bounds.height else { return }
-        let radius = self.bounds.width/2
-        let path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [UIRectCorner.topLeft, .topRight, .bottomRight, .bottomLeft], cornerRadii: CGSize(width: radius, height: radius))
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        
-        /// 边框图层
-        let borderLayer = CAShapeLayer()
-        borderLayer.frame = self.bounds
-        borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.strokeColor = borderColor.cgColor
-        borderLayer.lineCap = .round
-        borderLayer.lineWidth = borderWidth
-        borderLayer.path = path.cgPath
-        
-        self.layer.insertSublayer(borderLayer, at: 0)
-        self.layer.mask = maskLayer
+    ///   - shadowRadius: 阴影弧度半径
+    ///   - shadowOffset: 阴影偏移
+    ///   - shadowOpacity: 阴影的不透明度
+    ///   - shadowColor: 阴影颜色
+    public func om_addStyleWith(cornerRadius: CGFloat?, corners: UIRectCorner?, borderWidth: CGFloat?, borderColor: UIColor?, shadowRadius: CGFloat?, shadowOffset: CGSize?, shadowOpacity: Float?, shadowColor: UIColor?){
+        if let kCornerRadius = cornerRadius {
+            self.om_cornerRadius = kCornerRadius
+        }
+        if let kCorners = corners {
+            self.om_roundCorner = kCorners
+        }
+        if let kBorderWidth = borderWidth {
+            self.om_borderWidth = kBorderWidth
+        } else {
+            self.om_borderWidth = 0
+        }
+        if let kBorderColor = borderColor {
+            self.om_borderColor = kBorderColor
+        }
+        if let kShadowRadius = shadowRadius {
+            self.om_shadowRadius = kShadowRadius
+        }
+        if let kShadowColor = shadowColor {
+            self.om_shadowColor = kShadowColor
+        }
+        if let kShadowOffset = shadowOffset {
+            self.om_shadowOffset = kShadowOffset
+        }
+        if let kShadowOpacity = shadowOpacity {
+            self.om_shadowOpacity = kShadowOpacity
+        }
     }
-    
-    /// 为视图添加圆角以及边框
-    ///
-    /// - Parameter radius: 圆角弧度
-    ///   - borderWidth: 边框的宽度
-    ///   - borderColor: 边框颜色
-    func clipRoundCorner(radius: CGFloat, borderWidth: CGFloat, borderColor: UIColor) {
-        let path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [UIRectCorner.topLeft, .topRight, .bottomRight, .bottomLeft], cornerRadii: CGSize(width: radius, height: radius))
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        
-        /// 边框图层
-        let borderLayer = CAShapeLayer()
-        borderLayer.frame = self.bounds
-        borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.strokeColor = borderColor.cgColor
-        borderLayer.lineCap = .round
-        borderLayer.lineWidth = borderWidth
-        borderLayer.path = path.cgPath
-        
-        self.layer.insertSublayer(borderLayer, at: 0)
-        self.layer.mask = maskLayer
-    }
-    
-    /// 为视图指定方位添加圆角以及边框
-    ///
-    /// - Parameters:
-    ///   - byPosition: 指定方位
-    ///   - radius: 圆角半径
-    ///   - borderWidth: 边框的宽度
-    ///   - borderColor: 边框颜色
-    func clipRoundCorner(byPosition: UIRectCorner, radius: CGFloat, borderWidth: CGFloat, borderColor: UIColor) {
-        let path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: byPosition, cornerRadii: CGSize(width: radius, height: radius))
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        
-        /// 边框图层
-        let borderLayer = CAShapeLayer()
-        borderLayer.frame = self.bounds
-        borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.strokeColor = borderColor.cgColor
-        borderLayer.lineCap = .round
-        borderLayer.lineWidth = borderWidth
-        borderLayer.path = path.cgPath
-        
-        self.layer.insertSublayer(borderLayer, at: 0)
-        self.layer.mask = maskLayer
-    }
-    
-    // MARK: -添加视图效果
     
     /// 添加毛玻璃效果
     ///
     /// - Parameters:
     ///   - style: 毛玻璃风格
     ///   - alpha: 透明度
-    func addBlur(style: UIBlurEffect.Style, alpha: CGFloat) {
+    func om_addBlur(style: UIBlurEffect.Style, alpha: CGFloat) {
         let blurEffect = UIBlurEffect.init(style: style)
         let blurView = UIVisualEffectView.init(effect: blurEffect)
         blurView.frame = self.bounds
         blurView.alpha = alpha
         self.addSubview(blurView)
-    }
-    
-    
-    
-    /// 添加阴影效果
-    ///
-    /// - Parameters:
-    ///   - offset: 阴影偏移，系统默认的偏移值为：（0，-3）
-    ///   - color: 阴影颜色
-    ///   - radius: 阴影的半径
-    ///   - opacity: 阴影的透明度
-    func addShadow(offset: CGSize, color: UIColor, radius: CGFloat, opacity: Float) {
-        self.layer.shouldRasterize = true
-        guard self.layer.sublayers != nil else {
-            
-            layer.shadowOpacity = opacity
-            layer.shadowRadius = radius
-            layer.shadowOffset = offset
-            layer.shadowColor = color.cgColor
-            layer.masksToBounds = false
-          
-            return
-        }
-        let containerView = UIView.init(frame: self.bounds)
-        containerView.layer.shadowColor = color.cgColor
-        containerView.layer.shadowOffset = CGSize.init(width: -5, height: -5)
-        containerView.layer.shadowRadius = 15
-        containerView.layer.shadowOpacity = 0.2
-        containerView.addSubview(self)
-//        self = containerView
-        
-        for subLayer in self.layer.sublayers! {
-            if subLayer.isKind(of: CAShapeLayer.self) {
-                print("FIND:", subLayer)
-                let shadowLayer = subLayer as! CAShapeLayer
-//                layer.shadowColor = color.cgColor
-//                layer.shadowOffset = offset
-//                layer.shadowRadius = radius
-//                layer.shadowOpacity = opacity
-//                layer.borderWidth = layer.borderWidth == 0 ? 0.00001:layer.borderWidth
-//                self.layer.mask = layer
-//                let shadowView = UIView.init(frame: self.bounds)
-                layer.shadowColor = color.cgColor
-                layer.shadowOffset = offset
-                layer.shadowRadius = radius
-                layer.shadowOpacity = opacity
-                layer.masksToBounds = false
-                layer.shadowPath = shadowLayer.path
-                
-//                shadowView.layer.shadowOpacity = opacity
-//                shadowView.layer.shadowRadius = radius
-//                shadowView.layer.shadowOffset = offset
-//                shadowView.layer.shadowColor = color.cgColor
-//                shadowView.layer.masksToBounds = false
-//                self.addSubview(shadowView)
-//                self.layer.addSublayer(shadowView.layer)
-            }
-        }
-    }
-    
-    /// 添加边框
-    ///
-    /// - Parameters:
-    ///   - width: 边框宽度
-    ///   - color: 边框颜色
-    func addBorder(width: CGFloat, color: UIColor) {
-        self.layer.borderColor = color.cgColor
-        self.layer.borderWidth = width
-        self.layer.shouldRasterize = true
-    }
-    
-    // MARK: -视图截屏
-    
-    /// 对视图进行截屏处理
-    ///
-    /// - Returns: 返回视图截屏的结果图像
-    func capture() -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, UIScreen.main.scale)
-        self.drawHierarchy(in: self.bounds, afterScreenUpdates: true)
-        let shotImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return shotImage
     }
     
 }
